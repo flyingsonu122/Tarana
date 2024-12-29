@@ -195,13 +195,13 @@ function mute_sound() {
     curVolVal = recent_volume.value;
     curVolume = recent_volume.value / 100;
     track.volume = 0;
-    volume.value = 0;
-    volume_show.innerHTML = 0;
+    recent_volume.value = 0;
+    volume_show.textContent = 0;
 }
 
 function reset_sound() {
     track.volume = curVolume;
-    volume.value = curVolVal;
+    recent_volume.value = curVolVal;
     volume_show.textContent = curVolVal;
 }
 
@@ -298,45 +298,9 @@ function changeDur() {
 }
 
 
-// // for repeat
-// var select  = true;
-// // repeat.innerHTML = `<i class="bi bi-arrow-clockwise"></i>`;
 
-// // for shuffle
-// var selected = true;
-
-// shuffle.onclick = function () {
-//     if (selected) {
-//         shuffle.classList.add('selected');
-//         shuffle.classList.remove('shuffle');
-//         selected = false;
-//         shuffle.title = "Disable shuffle";
-//     } else {
-//         shuffle.classList.remove('selected');
-//         shuffle.classList.add('shuffle');
-//         selected = true;
-//         shuffle.title = "Enable shuffle";
-//     }
-// }
-
-// repeat.onclick = function () {
-//     if (select) {
-//         repeat.innerHTML = `1`;
-//         repeat.classList.add('selected');
-//         repeat.classList.remove('repeat');
-//         repeat.title = "Disable repeat";
-//         select = false;
-//     } else {
-//         repeat.innerHTML = `<i class="bi bi-arrow-clockwise"></i>`;
-//         repeat.classList.add('repeat');
-//         repeat.classList.remove('selected');
-//         select = true;
-//         repeat.title = "Enable repeat";
-//     }
-// }
-
-
-
+// Function will run when the song is over
+track.addEventListener('ended', next_song);
 
 function range_slider() {
     let position = 0;
@@ -353,68 +317,10 @@ function range_slider() {
         dursecs = Math.floor(track.duration - durmins * 60);
         full_duration.innerHTML = dursecs < 10 ? `${durmins} : 0${dursecs}` : `${durmins} : ${dursecs}`;
     }
-
-    // // Handle repeat functionality
-    // repeat.onclick = function () {
-    //     if (select) {
-    //         repeat.innerHTML = `1`;
-    //         repeat.classList.add('selected');
-    //         repeat.classList.remove('repeat');
-    //         repeat.title = "Disable repeat";
-    //         select = false;
-    //         // Ensure shuffle is unselected when repeat is selected
-    //         if (selected) {
-    //             shuffle.click();
-    //         }
-    //     } else {
-    //         repeat.innerHTML = `<i class="bi bi-arrow-clockwise"></i>`;
-    //         repeat.classList.add('repeat');
-    //         repeat.classList.remove('selected');
-    //         select = true;
-    //         repeat.title = "Enable repeat";
-    //     }
 }
 
-// // Handle shuffle functionality
-// shuffle.onclick = function () {
-//     if (selected) {
-//         shuffle.classList.add('selected');
-//         shuffle.classList.remove('shuffle');
-//         selected = false;
-//         shuffle.title = "Disable shuffle";
-//         // Ensure repeat is unselected when shuffle is selected
-//         if (!select) {
-//             repeat.click();
-//         }
-//     } else {
-//         shuffle.classList.remove('selected');
-//         shuffle.classList.add('shuffle');
-//         selected = true;
-//         shuffle.title = "Enable shuffle";
-//     }
-// }
 
-// Function to play a random song when shuffle is selected and track ends
-// function playRandomSong() {
-//     var anotherRandom = Math.floor(Math.random() * max);
-//     index_no = anotherRandom;
-//     out();
-// }
 
-// Function will run when the song is over
-if (track.ended) {
-    // if (shuffle.classList.contains("selected")) {
-    //     playRandomSong();
-    // } else if (repeat.classList.contains("selected")) {
-    //     track.currentTime = 0; // Start playing the same song again
-    //     track.play();
-    // } else {
-    //     next_song(); // Play the next song
-    // }
-
-    console.log("track ended");
-    next_song(); // Play the next song
-}
 
 
 
