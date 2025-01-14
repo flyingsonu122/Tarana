@@ -53,44 +53,38 @@ const id = new URLSearchParams(window.location.search).get("id");
 const url = `https://iamsonukushwaha.github.io/tarana/songs.json`;
 
 const renderDetails = async () => {
-  fetch(url)
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      All_song = data.songs;
-      max = All_song.length;
-      if (!id) {
-        console.error("ID is missing in the URL, hence playing first song");
-        index_no = 0;
-        GetAllSongs(index_no);
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+    const data = await response.json();
+    if (!data || !data.songs) {
+      throw new Error("Invalid data format");
+    }
+    All_song = data.songs;
+    max = All_song.length;
+    if (!id) {
+      console.error("ID is missing in the URL, hence playing first song");
+      index_no = 0;
+    } else {
+      const song = All_song.find((song) => song.id === id.toString());
+      if (song) {
+        index_no = parseInt(song.id) - 1;
       } else {
-        const song = All_song.find((song) => song.id === id.toString());
-        if (song) {
-          index_no = parseInt(song.id) - 1;
-          GetAllSongs(index_no);
-          const currentURL = window.location.href;
-          const parts = currentURL.split("?");
-          const urlBeforeQuery = parts[0];
-          window.history.pushState("Tarana", "Tarana", urlBeforeQuery);
-        } else {
-          console.error("Song not found, hence playing first song.");
-          index_no = 0;
-          GetAllSongs(index_no);
-          const currentURL = window.location.href;
-          const parts = currentURL.split("?");
-          const urlBeforeQuery = parts[0];
-          window.history.pushState("Tarana", "Tarana", urlBeforeQuery);
-        }
+        console.error("Song not found, hence playing first song.");
+        index_no = 0;
       }
-    })
-    .catch((error) => {
-      console.error("There was a problem with the fetch operation:", error);
-    });
-};
+    }
+    GetAllSongs(index_no);
+    const currentURL = window.location.href;
+    const parts = currentURL.split("?");
+    const urlBeforeQuery = parts[0];
+    window.history.pushState("Tarana", "Tarana", urlBeforeQuery);
+  } catch (error) {
+    console.error("There was a problem with the fetch operation:", error);
+  }
+}
 
 window.addEventListener("DOMContentLoaded", renderDetails());
 
